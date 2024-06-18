@@ -1,2 +1,3 @@
-# widget
-Settle Widget for show casing offers
+# Settle Widgets
+
+Settle Widget for show casing our offerings
