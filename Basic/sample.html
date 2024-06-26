@@ -8,7 +8,6 @@
     <script src="widget.js"></script>
   </head>
   <body>
-    <div id="popup-widget"></div>
     <settle-widget
       totalOrderValue="3000"
       productName="Your Product Name"
@@ -18,7 +17,8 @@
       buttonText="in flexible installments"
       currency="$"
     />
-
+    
+    <div id="popup-widget"></div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
@@ -30,7 +30,6 @@
             showProductName: false,
             theme: "rgb(155, 102, 0)",
             logoPosition: "right",
-            buttonText: "",
           });
         }, 1000);
       });
