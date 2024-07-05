@@ -18,7 +18,7 @@ Choose one of these methods to add the widget to your page:
 Simply add this tag where you want the widget to appear:
 
 ```html
-<settle-widget totalOrderValue="3000" />
+<settle-widget total-order-value="3000" />
 ```
 
 ### 2. JavaScript Object
