@@ -15,7 +15,7 @@
     ></script>
   </head>
   <body>
-    <settle-widget totalOrderValue="1200" />
+    <settle-widget total-order-value="1200" />
   </body>
 </html>
 ```
@@ -42,12 +42,12 @@
   <body>
     <div id="settle-widget-container"></div>
     <settle-widget
-      totalOrderValue="1200"
+      total-order-value="1200"
       selector="#settle-widget-container"
-      buttonText="in flexible installments"
-      logoPosition="left"
+      button-text="in flexible installments"
+      logo-position="left"
       theme="rgb(0, 0, 0)"
-      productName="Black T-Shirt"
+      product-name="Black T-Shirt"
     />
   </body>
 </html>
