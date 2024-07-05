@@ -85,7 +85,7 @@ class SettlePopupWidget extends HTMLElement {
 
   loadAndModifySVG = async (color) => {
     const logoUrl =
-      "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle-new/settleBranding.svg";
+      "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle/full-dark.svg";
 
     try {
       const response = await fetch(logoUrl);
@@ -808,7 +808,7 @@ class SettlePopupWidget extends HTMLElement {
                 ? `
                 <div class="productContainer">
                   ${
-                    showProductImage && productImage
+                    showProductImage && (productImage != "")
                       ? `
                       <img class="productImage" src=${productImage} alt="product image">
                       `
