@@ -808,7 +808,7 @@ class SettlePopupWidget extends HTMLElement {
                 ? `
                 <div class="productContainer">
                   ${
-                    showProductImage && productImage
+                    showProductImage && (productImage != "")
                       ? `
                       <img class="productImage" src=${productImage} alt="product image">
                       `
