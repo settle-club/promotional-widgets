@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <title>Popup</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Website</title>
+    <script src="widget.js"></script>
+  </head>
+  <body>
+    <!-- <div id="popup-widget"></div> -->
+
+    <div id="settle-widget-container"></div>
+
+    <settle-widget
+      total-order-value= "2000",
+      selector= "#settle-widget-container",
+      button-text= "in flexible installments",
+      logo-position= "left",
+      currency= "₹",
+      theme= "rgb(220, 20, 60)",
+      emi-tenure= "[3, 6, 9]",
+      show-product-name= "true",
+      show-product-image= "true",
+      show-suggested= "true",
+      suggested-month= "9",
+      product-name= "The Transit Luggage - Cabin, Green Lurex Embroidered Tier Dress",
+      product-image= "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png",
+    />
+
+    <!-- <settle-widget
+      emi-tenure= "[3, 6, 9]"
+      total-order-value= 2000
+      suggested-month= 6
+      product-name= "The Transit Luggage - Cabin,Green Lurex Embroidered Tier Dress"
+      show-product-image= true
+      show-product-name= true
+      theme= "rgb(220,20,60)"
+      logo-position= "left"
+      button-text= "in flexible installments"
+      currency= "₹"
+      product-image=
+        "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png"
+    /> -->
+
+    <!-- <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        setTimeout(() => {
+          new SettlePopupWidget({
+            selector: "#popup-widget",
+            currency: "₹",
+            theme: "rgb(220, 20, 60)",
+            "emi-tenure": [3, 6, 9],
+            "total-order-value": 30000,
+            "show-product-name": true,
+            "show-product-image": true,
+            "show-suggested": true,
+            "suggested-month": 12,
+            "product-name":
+              "The Transit Luggage - Cabin, Green Lurex Embroidered Tier Dress",
+            "product-image":
+              "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png",
+            "logo-position": "left",
+            "button-text": "in flexible installments",
+            "show-modal-preview": "true"
+          });
+        }, 1000);
+      });
+    </script> -->
+  </body>
+</html>
