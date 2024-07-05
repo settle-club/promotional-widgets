@@ -14,9 +14,6 @@ class SettlePopupWidget extends HTMLElement {
       "merchant-id": ""
   };
   initialRenderDone = false;
-  countryCode = "+91";
-  mobileNumber = "";
-  mobileNumberRegex = /^[6-9]\d{9}$/gi;
 
   static get observedAttributes() {
       return [
