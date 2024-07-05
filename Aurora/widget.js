@@ -1,179 +1,173 @@
 class SettlePopupWidget extends HTMLElement {
   defaultTheme = "rgb(1, 89, 79)";
   attributes = {
-    selector: "",
-    currency: "₹",
-    "emi-tenure": [3],
-    "total-order-value": "3000",
-    "product-name": "Your Product Name	",
-    "show-product-name": true,
-    theme: this.defaultTheme,
-    "logo-position": "right",
-    "button-text": "Interest free monthly payments with",
-    "show-modal-preview": false,
-    "merchant-id": ""
+      selector: "",
+      currency: "₹",
+      "emi-tenure": [3],
+      "total-order-value": "3000",
+      "product-name": "Your Product Name	",
+      "show-product-name": true,
+      theme: this.defaultTheme,
+      "logo-position": "right",
+      "button-text": "Interest free monthly payments with",
+      "show-modal-preview": false,
+      "merchant-id": ""
   };
   initialRenderDone = false;
   countryCode = "+91";
   mobileNumber = "";
-  showMobileInput = false;
-  setShowMobileInput = () => { };
-  errorMessage = "";
-  setErrorMessage = "";
   mobileNumberRegex = /^[6-9]\d{9}$/gi;
 
   static get observedAttributes() {
-    return [
-      "currency",
-      "emi-tenure",
-      "total-order-value",
-      "product-name",
-      "show-product-name",
-      "theme",
-      "logo-position",
-      "button-text",
-      "show-modal-preview",
-      "merchant-id"
-    ];
+      return [
+          "currency",
+          "emi-tenure",
+          "total-order-value",
+          "product-name",
+          "show-product-name",
+          "theme",
+          "logo-position",
+          "button-text",
+          "show-modal-preview",
+          "merchant-id"
+      ];
   }
 
   constructor(props = {}) {
-    super();
-    [this.showMobileInput, this.setShowMobileInput] = this.createObservedVariable(false);
-    [this.errorMessage, this.setErrorMessage] = this.createObservedVariable("");
+      super();
 
-    this.attributes = {
-      ...this.attributes,
-      ...props,
-    };
+      this.attributes = {
+          ...this.attributes,
+          ...props,
+      };
 
-    this.attachShadow({
-      mode: "open"
-    });
-    if (props.selector) {
-      this.renderAndBindListners();
-    }
+      this.attachShadow({
+          mode: "open"
+      });
+      if (props.selector) {
+          this.renderAndBindListners();
+      }
   }
 
   connectedCallback() {
-    if (!this.initialRenderDone) {
-      this.renderAndBindListners();
-      this.initialRenderDone = true;
-    }
+      if (!this.initialRenderDone) {
+          this.renderAndBindListners();
+          this.initialRenderDone = true;
+      }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    // During initialization, the attributeChangedCallback function is called for all observed attributes with null values.
-    // To prevent unnecessary rendering during this initial setup, we add a check to ensure the render method is not called
-    // until after the initial rendering has been completed. This avoids redundant calls and improves performance.
-    if (oldValue !== newValue && this.initialRenderDone) {
-      this.attributes[name] = newValue;
-      this.renderAndBindListners();
-    }
+      // During initialization, the attributeChangedCallback function is called for all observed attributes with null values.
+      // To prevent unnecessary rendering during this initial setup, we add a check to ensure the render method is not called
+      // until after the initial rendering has been completed. This avoids redundant calls and improves performance.
+      if (oldValue !== newValue && this.initialRenderDone) {
+          this.attributes[name] = newValue;
+          this.renderAndBindListners();
+      }
   }
 
   async renderAndBindListners(isModalOpen) {
-    await this.render(isModalOpen);
-    this.setupEventListeners();
+      await this.render(isModalOpen);
+      this.setupEventListeners();
   }
 
   adjustBrightness(rgb, opacityPercentage) {
-    // Parse the RGB color code
-    const regex = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/;
-    let rgbCodeParts = regex.exec(rgb);
+      // Parse the RGB color code
+      const regex = /^rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)$/;
+      let rgbCodeParts = regex.exec(rgb);
 
-    if (!rgbCodeParts) {
-      console.error("Invalid RGB color format");
-      rgb = this.defaultTheme; // Default theme color
-      rgbCodeParts = regex.exec(rgb);
-    }
+      if (!rgbCodeParts) {
+          console.error("Invalid RGB color format");
+          rgb = this.defaultTheme; // Default theme color
+          rgbCodeParts = regex.exec(rgb);
+      }
 
-    const r = parseInt(rgbCodeParts[1]);
-    const g = parseInt(rgbCodeParts[2]);
-    const b = parseInt(rgbCodeParts[3]);
+      const r = parseInt(rgbCodeParts[1]);
+      const g = parseInt(rgbCodeParts[2]);
+      const b = parseInt(rgbCodeParts[3]);
 
-    const alpha = Math.min(1, Math.max(0, opacityPercentage / 100));
-    const rgbaColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      const alpha = Math.min(1, Math.max(0, opacityPercentage / 100));
+      const rgbaColor = `rgba(${r}, ${g}, ${b}, ${alpha})`;
 
-    return rgbaColor;
+      return rgbaColor;
   }
 
   loadAndModifySVG = async (color) => {
-    const logoUrl =
-      "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle/full-dark.svg";
+      const logoUrl =
+          "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle/full-dark.svg";
 
-    try {
-      const response = await fetch(logoUrl);
-      const svgText = await response.text();
+      try {
+          const response = await fetch(logoUrl);
+          const svgText = await response.text();
 
-      const parser = new DOMParser();
-      const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
-      const svgElement = svgDoc.querySelector("svg");
+          const parser = new DOMParser();
+          const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+          const svgElement = svgDoc.querySelector("svg");
 
-      svgElement.querySelectorAll("path")?.forEach((element) => {
-        element.setAttribute("fill", color);
-        element.style.fill = color;
-      });
+          svgElement.querySelectorAll("path")?.forEach((element) => {
+              element.setAttribute("fill", color);
+              element.style.fill = color;
+          });
 
-      const modifiedSVG = new XMLSerializer().serializeToString(svgElement);
+          const modifiedSVG = new XMLSerializer().serializeToString(svgElement);
 
-      const svgBlob = new Blob([modifiedSVG], {
-        type: "image/svg+xml"
-      });
-      const urlObject = URL.createObjectURL(svgBlob);
+          const svgBlob = new Blob([modifiedSVG], {
+              type: "image/svg+xml"
+          });
+          const urlObject = URL.createObjectURL(svgBlob);
 
-      return urlObject;
-    } catch (error) {
-      console.error("Error loading or modifying SVG:", error);
-      return logoUrl;
-    }
+          return urlObject;
+      } catch (error) {
+          console.error("Error loading or modifying SVG:", error);
+          return logoUrl;
+      }
   };
 
   async render(isModalOpen = false) {
-    const buttonText =
-      this.getAttribute("button-text") ||
-      this.attributes["button-text"] ||
-      "Interest free monthly payments with";
-    const currency =
-      this.getAttribute("currency") || this.attributes.currency || "₹";
-    const logoPosition =
-      this.getAttribute("logo-position") ||
-      this.attributes["logo-position"] ||
-      "right";
+      const buttonText =
+          this.getAttribute("button-text") ||
+          this.attributes["button-text"] ||
+          "Interest free monthly payments with";
+      const currency =
+          this.getAttribute("currency") || this.attributes.currency || "₹";
+      const logoPosition =
+          this.getAttribute("logo-position") ||
+          this.attributes["logo-position"] ||
+          "right";
 
-    const totalOrderValue =
-      this.getAttribute("total-order-value") ||
-      this.attributes['total-order-value'] ||
-      "3000";
+      const totalOrderValue =
+          this.getAttribute("total-order-value") ||
+          this.attributes['total-order-value'] ||
+          "3000";
 
-    const productName =
-      this.getAttribute("product-name") || this.attributes["product-name"] || "Your Product Name";
-    const showProductName = eval(
-      this.getAttribute("show-product-name") ||
-      this.hasAttribute("show-product-name") ||
-      this.attributes["show-product-name"] ||
-      false
-    );
-    const showModalPreview = eval(
-      this.getAttribute("show-modal-preview") ||
-      this.hasAttribute("show-modal-preview") ||
-      this.attributes["show-modal-preview"] ||
-      false
-    );
+      const productName =
+          this.getAttribute("product-name") || this.attributes["product-name"] || "Your Product Name";
+      const showProductName = eval(
+          this.getAttribute("show-product-name") ||
+          this.hasAttribute("show-product-name") ||
+          this.attributes["show-product-name"] ||
+          false
+      );
+      const showModalPreview = eval(
+          this.getAttribute("show-modal-preview") ||
+          this.hasAttribute("show-modal-preview") ||
+          this.attributes["show-modal-preview"] ||
+          false
+      );
 
-    const themeRGBColor =
-      this.getAttribute("theme") || this.attributes.theme || this.defaultTheme;
-    const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
+      const themeRGBColor =
+          this.getAttribute("theme") || this.attributes.theme || this.defaultTheme;
+      const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
 
-    const month1 = this.formatDate(1);
-    const month2 = this.formatDate(2);
-    const month3 = this.formatDate(3);
+      const month1 = this.formatDate(1);
+      const month2 = this.formatDate(2);
+      const month3 = this.formatDate(3);
 
-    const emiValue = Math.round(totalOrderValue / 3).toLocaleString("en-IN");
+      const emiValue = Math.round(totalOrderValue / 3).toLocaleString("en-IN");
 
-    const logo = await this.loadAndModifySVG(themeRGBColor);
-    const logoSVG = (width = "92") => {
-      return `
+      const logo = await this.loadAndModifySVG(themeRGBColor);
+      const logoSVG = (width = "92") => {
+          return `
           <img 
             src='${logo}' 
             alt="settle logo"             
@@ -181,25 +175,25 @@ class SettlePopupWidget extends HTMLElement {
             style="width:${width}px">
           </img>
       `;
-    };
+      };
 
-    const cssVariables = {
-      scaleFactor: 0.8,
-      initialModalWidth: "320px",
-      initialFontSize: "16px",
-      initialTitleFontSize: "26px",
-      initialHeaderFontSize: "14px",
-      initialProductNamefontsize: "12px",
-      initialPieSize: "65px",
-      initialPadding: "10px",
-      initialMarginBottom: "8px",
-      initialLogoHeight: "24px",
-      initialLogoWidth: "24px",
-    }
+      const cssVariables = {
+          scaleFactor: 0.8,
+          initialModalWidth: "320px",
+          initialFontSize: "16px",
+          initialTitleFontSize: "26px",
+          initialHeaderFontSize: "14px",
+          initialProductNamefontsize: "12px",
+          initialPieSize: "65px",
+          initialPadding: "10px",
+          initialMarginBottom: "8px",
+          initialLogoHeight: "24px",
+          initialLogoWidth: "24px",
+      }
 
-    this.appendFontLink();
+      this.appendFontLink();
 
-    const css = ` 
+      const css = ` 
                   <link rel="preconnect" href="https://fonts.googleapis.com">
                   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
                   <style> 
@@ -588,7 +582,7 @@ class SettlePopupWidget extends HTMLElement {
                   </style>
                 `
 
-    const redirectSvg = `
+      const redirectSvg = `
   <span class="redirect-svg">
     <svg
       class="w-6 h-6 text-gray-800 dark:text-white"
@@ -610,18 +604,18 @@ class SettlePopupWidget extends HTMLElement {
     </span>
   `
 
-    const modalContent = `
+      const modalContent = `
       <div class="modal-content ${showModalPreview ? "preview-modal-content" : ""}">
           ${logoSVG()}
           <div class="close">&times;</div>
           ${showProductName && productName
-        ? `
+              ? `
               <div class="productName">
                   ${productName}
               </div>
               `
-        : ``
-      }
+              : ``
+          }
           <div class="orderDetails">
               <div class="title">
                   Start as <br />
@@ -657,7 +651,6 @@ class SettlePopupWidget extends HTMLElement {
                   <div class="listItem"><img src="https://cdn.pixelbin.io/v2/potlee/original/tick.png" />
                     <span class="onboard-with-settle-link" >Onboard with Settle ${redirectSvg}</span>
                   </div>
-                  ${this.renderMobileInput()}
                   <div class="listItem"><img src="https://cdn.pixelbin.io/v2/potlee/original/tick.png" />Add
                       products to cart</div>
                   <div class="listItem"><img src="https://cdn.pixelbin.io/v2/potlee/original/tick.png" />Checkout
@@ -675,7 +668,7 @@ class SettlePopupWidget extends HTMLElement {
       </div>
       `;
 
-    const html = `
+      const html = `
       <div class="settleFont">
           <div class="card">
               <span class="header">
@@ -687,292 +680,139 @@ class SettlePopupWidget extends HTMLElement {
               </span>
           </div>
           ${showModalPreview
-        ? `
+              ? `
                   <div class="preview-modal-container">
                       ${modalContent}
                   </div>
               `
-        : `
+              : `
                   <div class="modal">
                       <div class="modal-center">
                           ${modalContent}
                       </div>
                   </div>
               `
-      }
+          }
 
       </div>
       `;
 
-    const widgetHtml = css + html;
-    if (this.attributes.selector) {
-      const targetElement = document.querySelector(this.attributes.selector);
-      targetElement.innerHTML = widgetHtml;
-    } else {
-      this.shadowRoot.innerHTML = widgetHtml;
-    }
+      const widgetHtml = css + html;
+      if (this.attributes.selector) {
+          const targetElement = document.querySelector(this.attributes.selector);
+          targetElement.innerHTML = widgetHtml;
+      } else {
+          this.shadowRoot.innerHTML = widgetHtml;
+      }
   }
 
   formatDate = (monthsAhead) => {
-    const today = new Date();
-    const futureDate = new Date(
-      today.setMonth(today.getMonth() + monthsAhead)
-    );
-    return futureDate.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
+      const today = new Date();
+      const futureDate = new Date(
+          today.setMonth(today.getMonth() + monthsAhead)
+      );
+      return futureDate.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+      });
   };
 
   appendFontLink = () => {
-    const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
-    fontLink.rel = 'stylesheet';
-    fontLink.type = 'text/css';
-    document.head.appendChild(fontLink);
-  }
-
-  renderMobileInput = () => {
-    if (!this.showMobileInput() || !window.FPI) {
-      return ""
-    }
-
-    return `
-        <div>
-          <div class="mobile-container">
-            <span class="country-code-label">${this.countryCode}</span>
-            <input class="mobile-input" name="mobile" placeholder="Mobile number" value=${this.mobileNumber}></input>
-            <button class="submit-mobile" type="submit"> Send </button>
-          </div>
-          <span class="error-message">${this.errorMessage()}</span>
-        </div>
-        `
+      const fontLink = document.createElement('link');
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap';
+      fontLink.rel = 'stylesheet';
+      fontLink.type = 'text/css';
+      document.head.appendChild(fontLink);
   }
 
   setupEventListeners() {
-    let card;
-    let modal;
-    let modalCenter;
-    let closeModalButton;
-    let body;
-    let settleOnboardLink;
-    let submitMobileButton;
+      let card;
+      let modal;
+      let modalCenter;
+      let closeModalButton;
+      let body;
+      let settleOnboardLink;
+      let submitMobileButton;
 
-    if (this.attributes.selector) {
-      const targetElement = document.querySelector(this.attributes.selector);
-      card = targetElement.querySelector(".card");
-      modal = targetElement.querySelector(".modal");
-      modalCenter = targetElement.querySelector(".modal-center");
-      closeModalButton = targetElement.querySelector(".close");
-      body = document.querySelector("body");
-      settleOnboardLink = targetElement.querySelector(".onboard-with-settle-link")
-      submitMobileButton = targetElement.querySelector(".submit-mobile")
+      if (this.attributes.selector) {
+          const targetElement = document.querySelector(this.attributes.selector);
+          card = targetElement.querySelector(".card");
+          modal = targetElement.querySelector(".modal");
+          modalCenter = targetElement.querySelector(".modal-center");
+          closeModalButton = targetElement.querySelector(".close");
+          body = document.querySelector("body");
+          settleOnboardLink = targetElement.querySelector(".onboard-with-settle-link")
+          submitMobileButton = targetElement.querySelector(".submit-mobile")
 
-      window.addEventListener("click", (event) => {
-        this.handleModalClose(event, modal, modalCenter, body);
-      });
-    } else {
-      card = this.shadowRoot.querySelector(".card");
-      modal = this.shadowRoot.querySelector(".modal");
-      modalCenter = this.shadowRoot.querySelector(".modal-center");
-      closeModalButton = this.shadowRoot.querySelector(".close");
-      body = document.querySelector("body");
-      settleOnboardLink = this.shadowRoot.querySelector(".onboard-with-settle-link")
-      submitMobileButton = this.shadowRoot.querySelector(".submit-mobile")
+          window.addEventListener("click", (event) => {
+              this.handleModalClose(event, modal, modalCenter, body);
+          });
+      } else {
+          card = this.shadowRoot.querySelector(".card");
+          modal = this.shadowRoot.querySelector(".modal");
+          modalCenter = this.shadowRoot.querySelector(".modal-center");
+          closeModalButton = this.shadowRoot.querySelector(".close");
+          body = document.querySelector("body");
+          settleOnboardLink = this.shadowRoot.querySelector(".onboard-with-settle-link")
+          submitMobileButton = this.shadowRoot.querySelector(".submit-mobile")
 
-      this.shadowRoot.addEventListener("click", (event) => {
-        this.handleModalClose(event, modal, modalCenter, body);
-      });
-    }
-
-    card.addEventListener("click", () => {
-      if (modal) {
-        modal.style.display = "block";
-        body.style.overflow = "hidden";
+          this.shadowRoot.addEventListener("click", (event) => {
+              this.handleModalClose(event, modal, modalCenter, body);
+          });
       }
-    });
 
-    closeModalButton.addEventListener("click", () => {
-      this.closeModal(modal, body);
-    });
+      card.addEventListener("click", () => {
+          if (modal) {
+              modal.style.display = "block";
+              body.style.overflow = "hidden";
+          }
+      });
 
-    document.addEventListener("keydown", (event) => {
-      this.onEscapePressed(event, modal, body);
-    });
+      closeModalButton.addEventListener("click", () => {
+          this.closeModal(modal, body);
+      });
 
-    settleOnboardLink.addEventListener("click", () => this.handleOnboardToSettle(false))
-    submitMobileButton?.addEventListener("click", () => this.handleOnboardToSettle(true))
+      document.addEventListener("keydown", (event) => {
+          this.onEscapePressed(event, modal, body);
+      });
+
+      settleOnboardLink.addEventListener("click", () => this.handleOnboardToSettle(false))
+      submitMobileButton?.addEventListener("click", () => this.handleOnboardToSettle(true))
   }
 
   handleModalClose(event, modal, modalCenter, body) {
-    if (event.target === modal || event.target === modalCenter) {
-      this.closeModal(modal, body);
-    }
+      if (event.target === modal || event.target === modalCenter) {
+          this.closeModal(modal, body);
+      }
   }
 
   onEscapePressed = (event, modal, body) => {
-    if (event.key === "Escape" || event.code === "Escape") {
-      this.closeModal(modal, body);
-    }
+      if (event.key === "Escape" || event.code === "Escape") {
+          this.closeModal(modal, body);
+      }
   };
 
   closeModal = (modal, body) => {
-    if (modal) {
-      modal.style.display = "none";
-      body.style.overflow = "auto";
-    }
-
-    this.mobileNumber = "";
-    this.setErrorMessage("", false);
-    this.setShowMobileInput(false, false);
+      if (modal) {
+          modal.style.display = "none";
+          body.style.overflow = "auto";
+      }
   };
 
-  handleOnboardToSettle = async (fromSubmit = false) => {
-    try {
-      if (!window?.FPI) {
-        const merchantId = this.getAttribute("merchant-id") || this?.attributes["merchant-id"]
-        if (merchantId) {
-          window.open(`https://account.settle.club/${merchantId}`, "_blank");
-        } else {
-          window.open("https://account.settle.club/", "_blank");
-        }
-        return
-      }
-
-      const appId = window?.FPI?.state?.global?.appFetaure?._data?.feature?.app || ""
-
-      let customer = {};
-      const endUser = window?.FPI?.state?.user?._data || {}
-      const endUserPhoneNumber = endUser?.phone_numbers?.find((phoneNumber) => phoneNumber?.primary || phoneNumber?.verified || phoneNumber?.active)
-      if (endUserPhoneNumber) {
-        customer = {
-          countryCode: endUserPhoneNumber?.country_code || "",
-          mobile: endUserPhoneNumber?.phone || "",
-          uid: endUser?.user_id || ""
-        };
-      } else if (this.showMobileInput()) {
-        if (fromSubmit) {
-          let mobileInput = document.querySelector(".mobile-input");
-
-          if (this.attributes.selector) {
-            const targetElement = document.querySelector(this.attributes.selector);
-            mobileInput = targetElement.querySelector(".mobile-input")
-          } else {
-            mobileInput = this.shadowRoot.querySelector(".mobile-input")
-          }
-
-          customer = {
-            countryCode: this.countryCode || "",
-            mobile: mobileInput?.value || "",
-            uid: Math.floor(Math.random() * 9000000000) + 1000000000
-          };
-
-          this.mobileNumber = customer?.mobile
-          mobileInput.value = customer?.mobile
-
-          if ((!customer.mobile || !this.mobileNumberRegex?.test(customer.mobile))) {
-            this.setErrorMessage("Please Enter Valid Mobile number")
-            return;
-          }
-        } else {
-          this.setShowMobileInput(false)
-          return
-        }
-      } else {
-        this.setShowMobileInput(!this.showMobileInput())
-        return
-      }
-
-      if (customer.mobile && this.errorMessage()) {
-        this.setErrorMessage("")
-      }
-
-      let currentPageUrl
+  handleOnboardToSettle = async () => {
       try {
-        currentPageUrl = window.top.location.href
+          const merchantId = this.getAttribute("merchant-id") || this?.attributes["merchant-id"]
+          if (merchantId) {
+              window.open(`https://account.settle.club/${merchantId}`, "_blank");
+          } else {
+              window.open("https://account.settle.club/", "_blank");
+          }
       } catch (error) {
-        currentPageUrl = window?.location?.href
+          const message = "Enable to process with settle."
+          console.error(message, error)
       }
-
-      const boomerangRedirectUrl = `${window.location.protocol}//${window.location.hostname}/application/${appId}/store-session?clientRedirectUrl=${currentPageUrl}`
-
-      const payload = {
-        customer: customer,
-        redirectUrl: boomerangRedirectUrl || "",
-        device: {
-          ipAddress: await this.generateIP() || "",
-          userAgent: navigator?.userAgent || ""
-        }
-      }
-
-      const redirectUrl = await this.handleLinkCustomer(appId, payload);
-      window.open(redirectUrl, "_self");
-      this.setShowMobileInput(false)
-    } catch (error) {
-      const message = "Enable to process with settle."
-      console.error(message, error)
-      this.setErrorMessage(message)
-    }
   }
 
-  generateIP = async () => {
-    try {
-      const response = await fetch("https://ipinfo.io/json");
-      const data = await response.json();
-      return data.ip || null;
-    } catch (err) {
-      console.log("Error finding IP");
-      return ""
-    }
-  }
-
-  handleLinkCustomer = async (appId, payload) => {
-    try {
-      const apiDomain = `${window.location.protocol}//${window.location.hostname}:${window.location.port}`
-      const settleUrl = `${apiDomain}/api/v1/link_customer/${appId}`
-
-      const response = await fetch(settleUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response?.status === 200) {
-        const redirectUrlRes = await response?.json()
-        return redirectUrlRes?.data?.redirectUrl
-      } else {
-        throw new Error("Error while redirecting on settle website.")
-      }
-    } catch (error) {
-      console.log("Error while linking a customer", error);
-      throw error
-    }
-  }
-
-  createObservedVariable = (defaultValue, callbackFunc = () => { }) => {
-    let propertyValue = defaultValue
-
-    const setValue = (updatedValue, isModalOpen = true) => {
-      const oldValue = propertyValue
-      propertyValue = updatedValue
-      callbackFunc(updatedValue);
-
-      this.reRenderUI(oldValue, propertyValue, isModalOpen)
-    }
-
-    const getValue = () => propertyValue;
-
-    return [
-      getValue,
-      setValue,
-    ]
-  }
-
-  reRenderUI = (oldValue, updatedValue, isModalOpen = false) => {
-    this.renderAndBindListners(isModalOpen);
-  }
 }
 
 customElements.define("settle-widget", SettlePopupWidget);
