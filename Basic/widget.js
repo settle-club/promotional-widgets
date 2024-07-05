@@ -1,11 +1,11 @@
 class SettlePopupWidget extends HTMLElement {
-  defaultTheme = "rgb(1, 89, 79)";
+  defaultTheme = "rgb(10, 89, 79)";
   attributes = {
     selector: "",
     currency: "₹",
     emiTenure: [3],
-    totalOrderValue: "3000",
-    productName: "Your Product Name	",
+    totalOrderValue: "4000",
+    productName: "T-Shirt",
     showProductName: true,
     theme: this.defaultTheme,
     logoPosition: "right",
@@ -210,7 +210,7 @@ class SettlePopupWidget extends HTMLElement {
         }
 
         .settleLogo {
-            height: 15px;
+            height: 155px;
             margin-bottom: -3px;
             color: ${themeRGBColor};
         }
@@ -255,7 +255,7 @@ class SettlePopupWidget extends HTMLElement {
 
         .modal-content {
             height: fit-content;
-            background-color: white;
+            background-color: lightyellow;
             padding: 22px 20px;
             min-width: 320px;
             border: 2px solid ${themeRGBColor};
@@ -347,8 +347,8 @@ class SettlePopupWidget extends HTMLElement {
         }
 
         .pie1 {
-            width: 65px;
-            height: 65px;
+            width: 70px;
+            height: 70px;
             background-image: conic-gradient(${themeRGBColor} 33%, white 33%);
             border-radius: 50%;
             border: 1px solid #D1D1D1;

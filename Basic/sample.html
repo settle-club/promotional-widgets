@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <title>Popup</title>
+  <title>widget</title>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,30 +9,16 @@
   </head>
   <body>
     <settle-widget
-      totalOrderValue="3000"
-      productName="Your Product Name"
+      totalOrderValue="1500"
+      productName="T-Shirt"
       showProductName="true"
-      theme="rgb(102, 102, 0)"
-      logoPosition="left"
-      buttonText="in flexible installments"
-      currency="$"
+      theme="rgb(50, 102, 20)"
+      logoPosition="right"
+      buttonText="Interest free installments with" 
+      currency="₹"
     />
     
-    <div id="popup-widget"></div>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        setTimeout(() => {
-          new SettlePopupWidget({
-            selector: "#popup-widget",
-            currency: "₹",
-            emiTenure: 3,
-            totalOrderValue: "3000",
-            showProductName: false,
-            theme: "rgb(155, 102, 0)",
-            logoPosition: "right",
-          });
-        }, 1000);
-      });
-    </script>
+    
+    
   </body>
 </html>
