@@ -1,7 +1,16 @@
 # Aurora Widget
+The Aurora Widget is an elegant, streamlined version of the Settle Widget, designed for merchants who prioritize simplicity and clarity in their user interface. This widget offers a clean, unobtrusive way to showcase Settle's 3-month interest-free installment option. Its minimalist design ensures it integrates seamlessly with your store's aesthetic while effectively communicating the availability of flexible payment options to your customers.
+
+## Key Features
+- Fixed 3-month EMI option
+- Simple, uncluttered design
+- Quick implementation
+- Customizable colors and text
+- Interactive display with detailed payment information
+- Responsive design for all devices
+- Clear cost breakdown for customers
 
 ## Adding the Widget
-
 Add this script to your HTML file's `<head>` section:
 
 ```html
