@@ -32,7 +32,7 @@ Sleek and minimalist, perfect for a clean, modern aesthetic.
 - Quick implementation
 - Customizable colors and text
 
-[Explore Aurora Widget](./aurora/README.md)
+[Explore Aurora Widget](./Aurora/README.md)
 
 ### 2. Nebula Widget
 
@@ -45,4 +45,4 @@ Dynamic and feature-rich, ideal for stores seeking maximum flexibility.
 - Enhanced customization options
 - Product image display capability
 
-[Discover Nebula Widget](./nebula/README.md)
+[Discover Nebula Widget](./Nebula/README.md)
