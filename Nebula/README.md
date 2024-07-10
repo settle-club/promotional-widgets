@@ -1,3 +1,16 @@
+# Nebula Widget
+
+The Nebula Widget is a versatile and feature-rich version of the Settle Widget. It's designed for merchants who want to offer a range of flexible payment options. With its dynamic interface, Nebula seamlessly integrates into your store while showcasing multiple EMI plans, making it ideal for diverse product catalogs and price ranges.
+
+## Key Features
+
+- Flexible EMI options (1, 3, 6, 9, 12 months)
+- Engaging, visually appealing design
+- Comprehensive customization capabilities
+- Product image display integration
+- Interactive interface with detailed payment breakdowns
+- Clear presentation of multiple installment plans
+
 ## Adding the Widget
 
 Add this script to your HTML file's `<head>` section:
@@ -91,9 +104,9 @@ Adjust these attributes to configure your Settle Widget. Each option lets you co
 
 #### Result:
 
-![Default Widget Preview](../assets/default-widget-button.png)
+![Default Widget Preview](./assets/settle-default-widget-button.png)
 
-![Default Widget Preview](../assets/default-widget.png)
+![Default Widget Preview](./assets/settle-default-widget.png)
 
 ### Custom Configuration
 
@@ -132,6 +145,6 @@ Adjust these attributes to configure your Settle Widget. Each option lets you co
 
 #### Result:
 
-![Default Widget Preview](../assets/custom-widget-button.jpeg)
+![Default Widget Preview](./assets/settle-custom-widget-button.png)
 
-![Default Widget Preview](../assets/custom-widget.png)
+![Default Widget Preview](./assets/settle-custom-widget.png)
