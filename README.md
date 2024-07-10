@@ -1,131 +1,48 @@
-# Widget
+# Settle Widget
 
-Enhancement for your online store with a fully customizable Settle widget that seamlessly integrates with your store’s theme.
+The Settle Widget is a promotional popup designed to showcase Settle's interest-free monthly installment options on your online store. It educates customers about the availability of easy and quick installments through Settle, helping to boost sales, improve customer experience, and increase conversion rates.
 
-## Features
+## Why Integrate Settle Widget?
 
-- Easy implementation with a single JavaScript file
-- Clickable card reveals an informative popup
-- Customizable theme colors for card and popup
-- Configurable content through various attributes
+- **Boost Sales**: Make higher-value purchases more accessible
+- **Reduce Abandonment**: Flexible payments can decrease cart abandonment rates
+- **Enhance UX**: Provide clear, upfront payment information
+- **Easy Integration**: Simple setup with minimal code
+- **Brand Alignment**: Customizable to match your store's look and feel
 
-To activate the settle widget on your website, follow these steps:
+## Core Features
 
-## Adding the Widget
+1. **Easy Implementation**: Single JavaScript file integration
+2. **Interactive Display**: Clickable card reveals detailed payment information
+3. **Customizable Appearance**: Adapt colors and text to match your brand
+4. **Currency Support**: Works with multiple currencies
+5. **Clear Cost Breakdown**: Shows customers exactly what they'll pay
+6. **Settle Integration**: Direct link to Settle's secure payment platform
 
-Add this script to your HTML file's `<head>` section:
+## Designs, Tailored for Your Needs
 
-```html
-<script src="https://cdn.pixelbin.io/v2/potlee/original/settle-widget.js" defer></script>
-```
+### 1. Aurora Widget
 
-## Implementation
+Sleek and minimalist, perfect for a clean, modern aesthetic.
 
-Choose one of these methods to add the widget to your page:
+**Key Features:**
 
-### 1. HTML Element
+- Fixed 3-month EMI option
+- Simple, uncluttered design
+- Quick implementation
+- Customizable colors and text
 
-Simply add this tag where you want the widget to appear:
+[Explore Aurora Widget](./Aurora/README.md)
 
-```html
-<settle-widget totalOrderValue="3000" />
-```
+### 2. Nebula Widget
 
-### 2. JavaScript Object
+Dynamic and feature-rich, ideal for stores seeking maximum flexibility.
 
-Add a container element with the matching selector to your HTML. This element will serve as the placeholder for the widget.
+**Key Features:**
 
-```html
-<div id="settle-widget-container"></div>
-```
+- Flexible EMI options (1, 3, 6, 9, 12 months)
+- Eye-catching design
+- Enhanced customization options
+- Product image display capability
 
-Create a new instance of the `SettlePopupWidget` in your JavaScript. Make sure this script runs after the DOM has fully loaded.
-
-```javascript
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    new SettlePopupWidget({
-      selector: "#settle-widget-container",
-      totalOrderValue: "3000",
-    });
-  }, 1000);
-});
-```
-
-## Customization
-
-Adjust these attributes to configure your Settle Widget. Each option lets you control the widget's appearance and behavior to best fit your website: (applicable to both implementation methods) 
-
-| Attribute                                                                   | Description                               | Default                             | Options             |
-| --------------------------------------------------------------------------- | ----------------------------------------- | ----------------------------------- | ------------------- |
-| totalOrderValue * `number` | Purchase total amount                     | 0                                   | -                   |
-| selector * `string`        | Container element selector (for Javascript Object only) | #settle-widget-container            | -                   |
-| buttonText `string`                                                         | Custom button text                        | Interest free monthly payments with | -                   |
-| logoPosition `string`                                                       | Settle logo position in button            | right                               | "left", "right"     |
-| theme `string`                                                              | Widget color theme                        | rgb(1, 89, 79)                      | Any valid RGB color |
-| productName `string`                                                        | Your Product Name                         | Your Product Name                   | -                   |
-| showProductName `boolean`                                                   | Flag for showing product name             | true                                | -                   |
-| currency `string`                                                           | Currency symbol                           | ₹                                   | -                   |
-| emiTenure `number[]`                                                        | EMI duration in months                    | [3]                                 | [3, 6, 9, 12]       |
-
-*Required attribues
-
-## Examples
-
-### Default Configuration
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Default Widget Example</title>
-    <script
-      src="https://cdn.pixelbin.io/v2/potlee/original/settle-widget.js"
-      defer
-    ></script>
-  </head>
-  <body>
-    <settle-widget totalOrderValue="1200" />
-  </body>
-</html>
-```
-
-#### Result:
-![Default Widget Preview](https://cdn.pixelbin.io/v2/potlee/original/public/documentation/settle-widget/settle-widget-card.png)
-
-![Default Widget Preview](https://cdn.pixelbin.io/v2/potlee/original/public/documentation/settle-widget/settle-widget.png)
-
-### Custom Configuration
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Custom Widget Example</title>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://cdn.pixelbin.io/v2/potlee/original/settle-widget.js"
-      defer
-    ></script>
-  </head>
-  <body>
-    <div id="settle-widget-container"></div>
-    <settle-widget
-      totalOrderValue="1200"
-      selector="#settle-widget-container"
-      buttonText="in flexible installments"
-      logoPosition="left"
-      theme="rgb(0, 0, 0)"
-      productName="Black T-Shirt"
-    />
-  </body>
-</html>
-```
-
-#### Result:
-![Default Widget Preview](https://cdn.pixelbin.io/v2/potlee/original/public/documentation/settle-widget/custom-settle-widget-card.png)
-
-![Default Widget Preview](https://cdn.pixelbin.io/v2/potlee/original/public/documentation/settle-widget/custom-settle-widget.png)
+[Discover Nebula Widget](./Nebula/README.md)

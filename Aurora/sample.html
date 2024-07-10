@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<title>Popup</title>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Website</title>
+  <script src="widget.js"></script>
+</head>
+
+<body>
+  <div id="popup-widget"></div>
+  <settle-widget 
+    total-order-value="3000" 
+    product-name="Your Product Name" 
+    show-product-name="true"
+    theme="rgb(102, 102, 0)" 
+    logo-position="left" 
+    button-text="in flexible installments" 
+    currency="$">
+  </settle-widget>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        new SettlePopupWidget({
+          selector: "#popup-widget",
+          currency: "₹",
+          "emi-tenure": 3,
+          "total-order-value": "3000",
+          "show-product-name": false,
+          theme: "rgb(155, 102, 0)",
+          "logo-position": "right",
+        });
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
