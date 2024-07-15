@@ -158,7 +158,9 @@ class SettlePopupWidget extends HTMLElement {
       "Your Product Name";
 
     const productImage =
-      this.getAttribute("product-image") || this.attributes["product-image"] || "";
+      this.getAttribute("product-image") ||
+      this.attributes["product-image"] ||
+      "";
 
     const showProductName = eval(
       this.getAttribute("show-product-name") ||
@@ -192,29 +194,34 @@ class SettlePopupWidget extends HTMLElement {
     const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
     const contrastColor = this.calculateContrastColor(themeRGBColor);
 
-    const formatDate = (monthsAhead) => {
-      const today = new Date();
-      const futureDate = new Date(
-        today.setMonth(today.getMonth() + monthsAhead)
-      );
-      return futureDate.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      });
-    };
+    // Define allowed values
+    const allowedValues = [1, 3, 6, 9, 12];
 
-    let emiTenure = this.getAttribute("emi-tenure") ||
-      this.attributes["emi-tenure"] || [3, 6, 9, 12];
-      
-      emiTenure = Array.isArray(emiTenure) ? emiTenure.map(Number) : JSON.parse(emiTenure);
-      this.attributes["emi-tenure"] = emiTenure;
+    let emiTenure =
+      this.getAttribute("emi-tenure") ||
+      this.attributes["emi-tenure"] ||
+      "[3, 6, 9, 12]";
 
+    try {
+      emiTenure = JSON.parse(emiTenure);
+      if (Array.isArray(emiTenure)) {
+        emiTenure = emiTenure
+          .map(Number)
+          .filter((value) => allowedValues.includes(value));
+      } else {
+        emiTenure = [3, 6, 9, 12];
+      }
+    } catch (e) {
+      emiTenure = [3, 6, 9, 12];
+    }
+
+    this.attributes["emi-tenure"] = emiTenure;
 
     let suggestedMonth =
       this.getAttribute("suggested-month") ||
       this.attributes["suggested-month"] ||
       6;
-      suggestedMonth = Number(suggestedMonth);
+    suggestedMonth = Number(suggestedMonth);
 
     if (!emiTenure.includes(suggestedMonth)) {
       suggestedMonth = emiTenure[0];
@@ -245,10 +252,11 @@ class SettlePopupWidget extends HTMLElement {
           </svg>
         `;
 
-    const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap';
-    fontLink.rel = 'stylesheet';
-    fontLink.type = 'text/css';
+    const fontLink = document.createElement("link");
+    fontLink.href =
+      "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap";
+    fontLink.rel = "stylesheet";
+    fontLink.type = "text/css";
     document.head.appendChild(fontLink);
 
     const css = `
@@ -261,7 +269,7 @@ class SettlePopupWidget extends HTMLElement {
         }
 
         .card {
-            max-width: fit-content;
+            max-width: max-content;
             padding: 10px;
             cursor: pointer;
             border-radius: 15px;
@@ -279,11 +287,12 @@ class SettlePopupWidget extends HTMLElement {
 
         .headerContent {
             margin: 3px 0;
-            gap: 4px;
         }
 
         .headerContent img {
           padding-top: 1px;
+          margin-top: -4px;
+          vertical-align: middle;
         }
 
         .settleLogo {
@@ -323,7 +332,7 @@ class SettlePopupWidget extends HTMLElement {
             display: flex;        
             justify-content: center;
             align-items: center;
-            background-color: rgba(136, 136, 136, 0.243);
+            background-color: rgba(0, 0, 0, 0.5);
         }
 
         .preview-modal-container {
@@ -808,7 +817,7 @@ class SettlePopupWidget extends HTMLElement {
                 ? `
                 <div class="productContainer">
                   ${
-                    showProductImage && (productImage != "")
+                    showProductImage && productImage != ""
                       ? `
                       <img class="productImage" src=${productImage} alt="product image">
                       `
@@ -968,7 +977,6 @@ class SettlePopupWidget extends HTMLElement {
 
     emiBtns.forEach((button) => {
       button.addEventListener("click", (event) => {
-
         // Remove active class from all buttons
         emiBtns.forEach((btn) => btn.classList.remove("active"));
         // Add active class to the clicked button
@@ -996,7 +1004,7 @@ class SettlePopupWidget extends HTMLElement {
     document.addEventListener("keydown", (event) => {
       this.OnEscapePressed(event, modal, body);
     });
-  }     
+  }
 
   handleModalClose(event, modal, modalCenter, body) {
     if (event.target === modal || event.target === modalCenter) {
