@@ -15,7 +15,12 @@ class SettlePopupWidget extends HTMLElement {
     "logo-position": "right",
     "button-text": "Interest free monthly payments with",
     "show-modal-preview": false,
+    "custom-element": "",
+    "show-button": true,
+    "onboard-button": true,
   };
+
+  initialRenderDone = false;
 
   static get observedAttributes() {
     return [
@@ -32,6 +37,9 @@ class SettlePopupWidget extends HTMLElement {
       "logo-position",
       "button-text",
       "show-modal-preview",
+      "custom-element",
+      "show-button",
+      "onboard-button",
     ];
   }
 
@@ -47,11 +55,17 @@ class SettlePopupWidget extends HTMLElement {
   }
 
   connectedCallback() {
-    this.renderAndBindListners();
+    if (!this.initialRenderDone) {
+      this.renderAndBindListners();
+      this.initialRenderDone = true;
+    }
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
+    // During initialization, the attributeChangedCallback function is called for all observed attributes with null values.
+    // To prevent unnecessary rendering during this initial setup, we add a check to ensure the render method is not called
+    // until after the initial rendering has been completed. This avoids redundant calls and improves performance.
+    if (oldValue !== newValue && this.initialRenderDone) {
       this.attributes[name] = newValue;
       this.renderAndBindListners();
     }
@@ -60,6 +74,16 @@ class SettlePopupWidget extends HTMLElement {
   async renderAndBindListners() {
     await this.render();
     this.setupEventListeners();
+  }
+
+  showWidget() {
+    const body = document.querySelector("body");
+    const modal = this.shadowRoot.querySelector(".modal");
+
+    if (modal) {
+      modal.style.display = "block";
+      body.style.overflow = "hidden";
+    }
   }
 
   adjustBrightness(rgb, opacityPercentage) {
@@ -84,6 +108,9 @@ class SettlePopupWidget extends HTMLElement {
   }
 
   loadAndModifySVG = async (color) => {
+    console.log("loadAndModifySVG :: ", {
+      color,
+    });
     const logoUrl =
       "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle/full-dark.svg";
 
@@ -131,13 +158,27 @@ class SettlePopupWidget extends HTMLElement {
   }
 
   async render() {
+    const showButton = eval(
+      this.getAttribute("show-button") ||
+        this.hasAttribute("show-button") ||
+        this.attributes["show-button"] ||
+        true
+    );
+
+    const onBoardBtn = eval(
+      this.getAttribute("onboard-button") ||
+        this.hasAttribute("onboard-button") ||
+        this.attributes["onboard-button"] ||
+        true
+    );
+
     const buttonText =
       this.getAttribute("button-text") ||
       this.attributes["button-text"] ||
       "Interest free monthly payments with";
+
     const currency =
       this.getAttribute("currency") || this.attributes.currency || "₹";
-
     this.attributes.currency = currency;
 
     const logoPosition =
@@ -161,6 +202,11 @@ class SettlePopupWidget extends HTMLElement {
       this.getAttribute("product-image") ||
       this.attributes["product-image"] ||
       "";
+
+    const customElement =
+      this.getAttribute("custom-element") ||
+      this.attributes["custom-element"] ||
+      null;
 
     const showProductName = eval(
       this.getAttribute("show-product-name") ||
@@ -191,8 +237,9 @@ class SettlePopupWidget extends HTMLElement {
 
     const themeRGBColor =
       this.getAttribute("theme") || this.attributes.theme || this.defaultTheme;
-    const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
-    const contrastColor = this.calculateContrastColor(themeRGBColor);
+
+      const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
+      const contrastColor = this.calculateContrastColor(themeRGBColor);
 
     // Define allowed values
     const allowedValues = [1, 3, 6, 9, 12];
@@ -268,7 +315,7 @@ class SettlePopupWidget extends HTMLElement {
           margin: 0;
         }
 
-        .card {
+        .sub-card {
             max-width: max-content;
             padding: 10px;
             cursor: pointer;
@@ -706,6 +753,20 @@ class SettlePopupWidget extends HTMLElement {
               width: 100%;
             }
 
+            .emiOption {
+              gap: 8px;
+            }
+
+            .emiOption .emi-duration-btn {
+              font-size: 12px;
+              line-height: 20.8px;
+              padding: 7px 11.6px;
+            }
+
+            .emi-duration-btn .month-no {
+              font-size: 16px;
+            }
+
             .emi-duration-btn .month-no {
                 font-size: 16px;
                 line-height: 20.4px;
@@ -802,9 +863,9 @@ class SettlePopupWidget extends HTMLElement {
             <div class="orderDetails">
                 <div class="title">
                     Start as <br />
-                    Low as <span class="emiValue">${currency}${(
+                    Low as <span class="emiValue">${currency}${Math.ceil(
       totalOrderValue / emiTenure[emiTenure.length - 1]
-    ).toFixed(0)}</span>
+    )}</span>
                 </div>
                 <div class="totalOrder">
                     <div class="value">${currency}${totalOrderValue}</div>
@@ -859,9 +920,13 @@ class SettlePopupWidget extends HTMLElement {
             <div class="steps">
                 <div class="steps-head">
                   <div class="title">Steps to perform: </div>
-                  <div class="onboard">
-                    <a href="#">Onboard in Settle</a>
-                  </div>
+                  ${
+                    onBoardBtn
+                      ? `<div class="onboard">
+                        <a href="#">Onboard in Settle</a>
+                      </div>`
+                      : ""
+                  }
                 </div>
                 <div class="list-container">
                   <div class="list">
@@ -890,13 +955,22 @@ class SettlePopupWidget extends HTMLElement {
     const html = `
         <div class="settleFont">
             <div class="card">
+            ${
+              customElement ||
+              (showButton
+                ? `
+              <div class="sub-card">
                 <span class="header">
-                    <span class="headerContent">
+                  <span class="headerContent">
                     ${logoPosition === "left" ? logoSVG("50") : ""}
                     ${buttonText}
                     ${logoPosition !== "left" ? logoSVG("50") : ""}
-                    </span>
+                  </span>
                 </span>
+              </div>
+            `
+                : "")
+            }
             </div>
             ${
               showModalPreview
@@ -1026,8 +1100,9 @@ class SettlePopupWidget extends HTMLElement {
   };
 
   updateEMIDetails(months, emiList) {
-    const emiAmount =
-      parseInt(this.attributes["total-order-value"] / months) || 0; // Example EMI amount, adjust as needed
+    const emiAmount = Math.ceil(
+      this.attributes["total-order-value"] / months || 0
+    ); // Example EMI amount, adjust as needed
 
     const today = new Date();
     const emiDates = [];
@@ -1086,3 +1161,29 @@ class SettlePopupWidget extends HTMLElement {
 }
 
 customElements.define("settle-widget", SettlePopupWidget);
+
+window.showSettleWidget = function (attributes) {
+  if (
+    typeof attributes !== "object" ||
+    attributes === null ||
+    Object.keys(attributes).length === 0
+  ) {
+    console.error("Attributes must be an object");
+    return;
+  }
+
+  let settleWidget = document.querySelector("settle-widget");
+  if (!settleWidget) {
+    settleWidget = document.createElement("settle-widget");
+    for (const [key, value] of Object.entries(attributes)) {
+      settleWidget.setAttribute(key, value);
+    }
+    document.body.appendChild(settleWidget);
+  }
+
+  setTimeout(() => {
+    if (settleWidget?.showWidget) {
+      settleWidget.showWidget();
+    }
+  }, 100);
+};

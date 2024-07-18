@@ -17,9 +17,7 @@ Add this script to your HTML file's `<head>` section:
 
 ```html
 <script
-  src="https://cdn.pixelbin.io/v2/potlee/original/public/widgets/nebula/settle-widget.js"
-  defer
-></script>
+  src="https://cdn.pixelbin.io/v2/potlee/original/public/widgets/nebula/settle-widget.js" defer></script>
 ```
 
 ## Implementation
@@ -55,25 +53,52 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 ```
 
+### 3. Function OnClick
+
+You can also implement the widget using a function call triggered by an onclick event. Add a clickable element to your HTML and call the showSettleWidget function with the desired configuration.
+
+```javascript
+    <p
+      id="open-widget"
+      onclick="showSettleWidget({
+      'total-order-value': '3000',
+      'show-button': 'false',
+      'onboard-button': 'false',
+      'currency': '₹',
+      'theme': 'rgb(220, 20, 60)',
+      'emi-tenure': '[3, 6, 9]',
+      'show-product-name': 'true',
+      'show-product-image': 'false',
+      'show-suggested': 'true',
+      'suggested-month': '6',
+      'product-name': 'The Transit Luggage - Cabin, Green Lurex Embroidered Tier Dress',
+      })"
+    >
+      View EMI Options
+    </p>
+```
+
 ## Customization
 
 Adjust these attributes to configure your Settle Widget. Each option lets you control the widget's appearance and behavior to best fit your website: (applicable to both implementation methods)
 
-| Attribute                           | Description                                              | Default                             | Options                          |
-| ----------------------------------- | -------------------------------------------------------- | ----------------------------------- | -------------------------------- |
-| total-order-value\* `number`      | Total purchase amount                                    | 0                                   | -                                |
-| selector\* `string`               | Container element selector (for Javascript Object only) | #settle-widget-container            | -                                |
-| emi-tenure*`number[]`             | EMI duration in months                                   | [3, 6, 9]                           | [3, 6, 9, 12]                    |
-| button-text `string`              | Custom button text                                       | Interest free monthly payments with | -                                |
-| logo-position `string`            | Settle logo position in button                           | right                               | "left", "right"                  |
-| theme `string`                    | Widget color theme                                       | rgb(220, 20, 60)                    | Any valid RGB color              |
-| product-name `string`             | Your Product Name                                        | Your Product Name                   | -                                |
-| show-product-name `boolean`       | Flag for showing product name                            | false                               | -                                |
-| currency `string`                 | Currency symbol                                          | ₹                                  | -                                |
-| show-product-image<br />`boolean` | Flag for showing product image                           | false                               | -                                |
-| product-image `string`           | Your product URL                                         | ""                                  | -                                |
-| show-suggested `string`           | Flag for showing suggested badge                         | true                                | -                                |
-| suggested-month `number`          | Default selected month on opening widget                 | 6                                   | select any month from emi-tenure |
+| Attribute                           | Description                                                                                   | Default                             | Options                                 |
+| ----------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------- | --------------------------------------- |
+| total-order-value\* `number`      | Total purchase amount                                                                         | 0                                   | -                                       |
+| selector\* `string`               | Container element selector (for Javascript Object only)                                      | #settle-widget-container            | -                                       |
+| emi-tenure*`number[]`             | EMI duration in months                                                                        | [3, 6, 9]                           | [3, 6, 9, 12]                           |
+| button-text `string`              | Custom button text                                                                            | Interest free monthly payments with | -                                       |
+| logo-position `string`            | Settle logo position in button                                                                | right                               | "left", "right"                         |
+| theme `string`                    | Widget color theme                                                                            | rgb(220, 20, 60)                    | Any valid RGB color                     |
+| product-name `string`             | Your Product Name                                                                             | Your Product Name                   | -                                       |
+| show-product-name `boolean`       | Flag for showing product name                                                                 | false                               | -                                       |
+| currency `string`                 | Currency symbol                                                                               | ₹                                  | -                                       |
+| show-product-image<br />`boolean` | Flag for showing product image                                                                | false                               | -                                       |
+| product-image `string`           | Your product URL                                                                              | ""                                  | -                                       |
+| show-suggested `string`           | Flag for showing suggested badge                                                              | true                                | -                                       |
+| suggested-month `number`          | Default selected month on opening widget                                                      | 6                                   | select any month from emi-tenure        |
+| show-button `boolean`             | Flag for showing Settle button                                                                | true                                | -                                       |
+| custom-element `string`           | Add the HTML element which you want to show in place<br />of settle button with inline styles | ""                                  | "`<button>`Open Widget `</button>`" |
 
 \*Required attribues
 
