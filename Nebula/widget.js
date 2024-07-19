@@ -18,6 +18,7 @@ class SettlePopupWidget extends HTMLElement {
     "custom-element": "",
     "show-button": true,
     "onboard-button": true,
+    "merchant-id": ""
   };
 
   initialRenderDone = false;
@@ -40,6 +41,7 @@ class SettlePopupWidget extends HTMLElement {
       "custom-element",
       "show-button",
       "onboard-button",
+      "merchant-id"
     ];
   }
 
@@ -108,9 +110,6 @@ class SettlePopupWidget extends HTMLElement {
   }
 
   loadAndModifySVG = async (color) => {
-    console.log("loadAndModifySVG :: ", {
-      color,
-    });
     const logoUrl =
       "https://cdn.pixelbin.io/v2/potlee/original/public/logos/settle/full-dark.svg";
 
@@ -238,8 +237,8 @@ class SettlePopupWidget extends HTMLElement {
     const themeRGBColor =
       this.getAttribute("theme") || this.attributes.theme || this.defaultTheme;
 
-      const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
-      const contrastColor = this.calculateContrastColor(themeRGBColor);
+    const lighterThemeColor = this.adjustBrightness(themeRGBColor, 10);
+    const contrastColor = this.calculateContrastColor(themeRGBColor);
 
     // Define allowed values
     const allowedValues = [1, 3, 6, 9, 12];
@@ -644,6 +643,10 @@ class SettlePopupWidget extends HTMLElement {
             gap: 8px;
         }
 
+        .onboard {
+            cursor: pointer;
+        }
+
         .onboard a {
             color: ${themeRGBColor};        
             font-size: 14px;
@@ -922,8 +925,8 @@ class SettlePopupWidget extends HTMLElement {
                   <div class="title">Steps to perform: </div>
                   ${
                     onBoardBtn
-                      ? `<div class="onboard">
-                        <a href="#">Onboard in Settle</a>
+                      ? `<div class="onboard onboard-with-settle-link">
+                        <a>Onboard on Settle</a>
                       </div>`
                       : ""
                   }
@@ -1006,6 +1009,7 @@ class SettlePopupWidget extends HTMLElement {
     let modalCenter;
     let closeModalButton;
     let body = document.querySelector("body");
+    let settleOnboardLink;
     let emiBtns;
     let emiList;
     let badge;
@@ -1018,6 +1022,7 @@ class SettlePopupWidget extends HTMLElement {
       closeModalButton = targetElement.querySelector(".close");
       emiBtns = document.querySelectorAll(".emi-duration-btn");
       emiList = document.querySelector(".emi-list");
+      settleOnboardLink = targetElement.querySelector(".onboard-with-settle-link")
       badge = document.querySelector(".badge");
 
       window.addEventListener("click", (event) => {
@@ -1030,6 +1035,7 @@ class SettlePopupWidget extends HTMLElement {
       closeModalButton = this.shadowRoot.querySelector(".close");
       emiBtns = this.shadowRoot.querySelectorAll(".emi-duration-btn");
       emiList = this.shadowRoot.querySelector(".emi-list");
+      settleOnboardLink = this.shadowRoot.querySelector(".onboard-with-settle-link")
       badge = this.shadowRoot.querySelector(".badge");
 
       this.shadowRoot.addEventListener("click", (event) => {
@@ -1078,6 +1084,8 @@ class SettlePopupWidget extends HTMLElement {
     document.addEventListener("keydown", (event) => {
       this.OnEscapePressed(event, modal, body);
     });
+
+    settleOnboardLink.addEventListener("click", () => this.handleOnboardToSettle())
   }
 
   handleModalClose(event, modal, modalCenter, body) {
@@ -1158,6 +1166,20 @@ class SettlePopupWidget extends HTMLElement {
       emiList.appendChild(emiItem);
     });
   }
+
+  handleOnboardToSettle = async () => {
+    try {
+        const merchantId = this.getAttribute("merchant-id") || this?.attributes["merchant-id"]
+        if (merchantId) {
+            window.open(`https://account.settle.club/${merchantId}`, "_blank");
+        } else {
+            window.open("https://account.settle.club/", "_blank");
+        }
+    } catch (error) {
+        const message = "Enable to process with settle."
+        console.error(message, error)
+    }
+}
 }
 
 customElements.define("settle-widget", SettlePopupWidget);
