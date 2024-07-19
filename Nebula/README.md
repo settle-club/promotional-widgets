@@ -99,6 +99,7 @@ Adjust these attributes to configure your Settle Widget. Each option lets you co
 | suggested-month `number`          | Default selected month on opening widget                                                      | 6                                   | select any month from emi-tenure        |
 | show-button `boolean`             | Flag for showing Settle button                                                                | true                                | -                                       |
 | custom-element `string`           | Add the HTML element which you want to show in place<br />of settle button with inline styles | ""                                  | "`<button>`Open Widget `</button>`" |
+| merchant-id `string`              | Merchant Id to redirect on that page of settle                                                | -                                   | -                                       |
 
 \*Required attribues
 
