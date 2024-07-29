@@ -239,6 +239,12 @@ class SettlePopupWidget extends HTMLElement {
                     gap: 4px;
                   }
 
+                  .headerContent img {
+                    padding-top: 1px;
+                    margin-top: -4px;
+                    vertical-align: middle;
+                  }
+
                   .settleLogo {
                     height: calc(var(--initial-logo-height, ${cssVariables?.initialLogoHeight}) * var(--scale-factor, ${cssVariables?.scaleFactor}));
                     width: calc(var(--initial-logo-width, ${cssVariables?.initialLogoWidth}) * var(--scale-factor, ${cssVariables?.scaleFactor}));
