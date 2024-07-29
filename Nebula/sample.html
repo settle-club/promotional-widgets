@@ -10,7 +10,25 @@
   <body>
     <!-- <div id="popup-widget"></div> -->
 
-    <div id="settle-widget-container"></div>
+    <!-- <div id="settle-widget-container"></div> -->
+
+    <p
+      onclick="showSettleWidget({
+    'total-order-value': '3000',
+    'show-button': 'false',
+    'onboard-button': 'false',
+    'currency': '₹',
+    'theme': 'rgb(220, 20, 60)',
+    'emi-tenure': '[3, 6, 9]',
+    'show-product-name': 'true',
+    'show-product-image': 'false',
+    'show-suggested': 'true',
+    'suggested-month': '6',
+    'product-name': 'The Transit Luggage - Cabin, Green Lurex Embroidered Tier Dress',
+    })"
+    >
+      View EMI Options
+    </p>
 
     <!-- <settle-widget
       total-order-value= "2000",
@@ -28,7 +46,7 @@
       product-image= "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png",
     /> -->
 
-    <settle-widget
+    <!-- <settle-widget
       emi-tenure= "[3, 6, 9]"
       total-order-value= 2000
       suggested-month= 6
@@ -41,7 +59,7 @@
       currency= "₹"
       product-image=
         "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png"
-    />
+    /> -->
 
     <!-- <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -62,7 +80,6 @@
               "https://cdn.fynd.com/v2/falling-surf-7c8bb8/fyndnp/wrkr/x5/products/pictures/item/free/resize-w:800/e0r0ygn1e-black-shirt.png",
             "logo-position": "left",
             "button-text": "in flexible installments",
-            "show-modal-preview": "true"
           });
         }, 1000);
       });
