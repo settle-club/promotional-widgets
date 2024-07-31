@@ -83,7 +83,7 @@ class SettlePopupWidget extends HTMLElement {
 
     if (this.attributes.selector) {
       const targetElement = document.querySelector(this.attributes.selector);
-      modal = targetElement.querySelector(".modal");
+      modal = targetElement?.shadowRoot?.querySelector(".modal");
     } else {
       modal = this.shadowRoot.querySelector(".modal");
     }
@@ -872,7 +872,7 @@ class SettlePopupWidget extends HTMLElement {
               <div class="orderDetails">
                   <div class="title">
                       Start as <br />
-                      Low as <span class="emiValue">${currency}${Math.ceil(
+                      Low as <span class="emiValue">${currency}${Math.round(
       totalOrderValue / emiTenure[emiTenure.length - 1]
     )}</span>
                   </div>
@@ -1001,9 +1001,15 @@ class SettlePopupWidget extends HTMLElement {
           `;
 
     const widgetHtml = css + html;
+
     if (this.attributes.selector) {
       const targetElement = document.querySelector(this.attributes.selector);
-      targetElement.innerHTML = widgetHtml;
+      if (targetElement) {
+        if (!targetElement.shadowRoot) {
+          targetElement.attachShadow({ mode: "open" });
+        }
+        targetElement.shadowRoot.innerHTML = widgetHtml;
+      }
     } else {
       this.shadowRoot.innerHTML = widgetHtml;
     }
@@ -1022,18 +1028,18 @@ class SettlePopupWidget extends HTMLElement {
 
     if (this.attributes.selector) {
       const targetElement = document.querySelector(this.attributes.selector);
-      card = targetElement.querySelector(".card");
-      modal = targetElement.querySelector(".modal");
-      modalCenter = targetElement.querySelector(".modal-center");
-      closeModalButton = targetElement.querySelector(".close");
-      emiBtns = document.querySelectorAll(".emi-duration-btn");
-      emiList = document.querySelector(".emi-list");
-      settleOnboardLink = targetElement.querySelector(
+      card = targetElement.shadowRoot?.querySelector(".card");
+      modal = targetElement.shadowRoot?.querySelector(".modal");
+      modalCenter = targetElement.shadowRoot?.querySelector(".modal-center");
+      closeModalButton = targetElement.shadowRoot?.querySelector(".close");
+      emiBtns = targetElement.shadowRoot?.querySelectorAll(".emi-duration-btn");
+      emiList = targetElement.shadowRoot?.querySelector(".emi-list");
+      settleOnboardLink = targetElement.shadowRoot?.querySelector(
         ".onboard-with-settle-link"
       );
-      badge = document.querySelector(".badge");
+      badge = targetElement.shadowRoot?.querySelector(".badge");
 
-      window.addEventListener("click", (event) => {
+      targetElement.shadowRoot?.addEventListener("click", (event) => {
         this.handleModalClose(event, modal, modalCenter, body);
       });
     } else {
@@ -1121,7 +1127,7 @@ class SettlePopupWidget extends HTMLElement {
   };
 
   updateEMIDetails(months, emiList) {
-    const emiAmount = Math.ceil(
+    const emiAmount = Math.round(
       this.attributes["total-order-value"] / months || 0
     ); // Example EMI amount, adjust as needed
 
