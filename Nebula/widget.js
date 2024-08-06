@@ -53,12 +53,15 @@ class SettlePopupWidget extends HTMLElement {
     };
 
     this.attachShadow({ mode: "open" });
-    this.renderAndBindListners();
+    if (props.selector) {
+      this.renderAndBindListners();
+    }
   }
 
   connectedCallback() {
     if (!this.initialRenderDone) {
       this.initialRenderDone = true;
+      this.renderAndBindListners();
     }
   }
 
@@ -256,6 +259,8 @@ class SettlePopupWidget extends HTMLElement {
 
     try {
       emiTenure = JSON.parse(emiTenure);
+      
+      // Filter out invalid values and convert to array if necessary
       if (Array.isArray(emiTenure)) {
         emiTenure = emiTenure
           .map(Number)
